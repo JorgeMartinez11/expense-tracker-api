@@ -1,0 +1,48 @@
+@baseUrl = http://localhost:8080
+# Replace this with the id returned by Create expense.
+@expenseId = 00000000-0000-0000-0000-000000000000
+
+### Health
+GET {{baseUrl}}/actuator/health
+
+### Create expense
+POST {{baseUrl}}/api/v1/expenses
+Content-Type: application/json
+
+{
+  "description": "Lunch",
+  "amount": 12.30,
+  "category": "FOOD",
+  "incurredOn": "2026-09-01"
+}
+
+### List with filters
+GET {{baseUrl}}/api/v1/expenses?category=FOOD&from=2026-09-01&to=2026-09-30&page=0&size=20
+
+### Get expense
+GET {{baseUrl}}/api/v1/expenses/{{expenseId}}
+
+### Replace expense
+PUT {{baseUrl}}/api/v1/expenses/{{expenseId}}
+Content-Type: application/json
+
+{
+  "description": "Dinner",
+  "amount": 18.50,
+  "category": "FOOD",
+  "incurredOn": "2026-09-02"
+}
+
+### Invalid amount: expect 400
+POST {{baseUrl}}/api/v1/expenses
+Content-Type: application/json
+
+{
+  "description": "Invalid expense",
+  "amount": -1,
+  "category": "FOOD",
+  "incurredOn": "2026-09-01"
+}
+
+### Delete expense
+DELETE {{baseUrl}}/api/v1/expenses/{{expenseId}}
